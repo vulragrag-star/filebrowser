@@ -73,8 +73,8 @@ func AdminSourceFilePermissions() users.SourceFilePermissions {
 
 // MergeDefaultEnabledBackendScopes ensures every defaultEnabled source is present in
 // BackendScopes. Existing scopes for configured sources are preserved (empty Scope is
-// filled from DefaultUserScope). Unknown paths not in Config.Server.Sources are kept
-// at the end. defaultEnabled: false sources are never auto-added.
+// filled from DefaultUserScope; Permissions and Quota are kept). Unknown paths not in
+// Config.Server.Sources are kept at the end. defaultEnabled: false sources are never auto-added.
 // declined lists defaultEnabled source paths the user explicitly removed via scope edits.
 func MergeDefaultEnabledBackendScopes(existing []users.BackendScope, declined []string) []users.BackendScope {
 	declinedSet := make(map[string]struct{}, len(declined))
@@ -111,6 +111,7 @@ func MergeDefaultEnabledBackendScopes(existing []users.BackendScope, declined []
 			Path:        src.Path,
 			Scope:       existingScope.Scope,
 			Permissions: existingScope.Permissions,
+			Quota:       existingScope.Quota,
 		})
 		seen[src.Path] = struct{}{}
 	}
